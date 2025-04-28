@@ -4,7 +4,7 @@ import '../styles/navbar.css';
 import { AuthContext } from '../providers/AuthContext';
 
 const Navbar = () => {
-  const { signOutUser } = use(AuthContext);
+  const { user, signOutUser } = use(AuthContext);
   const links = (
     <>
       <li>
@@ -67,9 +67,16 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end">
-          <Link onClick={handleSignOut} to="/" className="btn">
-            SignOut
-          </Link>
+          {user ? (
+            <>
+              <span>{user.email}</span>
+              <Link onClick={handleSignOut} className="btn">
+                SignOut
+              </Link>
+            </>
+          ) : (
+            <Link to="/signin">Login</Link>
+          )}
         </div>
       </div>
     </div>

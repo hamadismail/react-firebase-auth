@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { use, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import GoogleLoginBtn from '../components/ui/GoogleLoginBtn';
 import PasswordIcon from '../components/ui/PasswordIcon';
@@ -8,9 +8,10 @@ import { AuthContext } from '../providers/AuthContext';
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { signInUser, googleSignIn } = use(AuthContext);
+  const { signInUser, googleSignIn, resetPassword } = use(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const emailRef = useRef();
 
   const handleSignIn = e => {
     e.preventDefault();
@@ -20,6 +21,10 @@ const SignIn = () => {
     signInUser(email, password)
       .then(result => {
         console.log(result);
+        if (!result.user.emailVerified) {
+          alert('please verify your email address');
+          signOut(auth);
+        }
         navigate(location?.state || '/');
       })
       .catch(error => console.log(error));
@@ -34,6 +39,15 @@ const SignIn = () => {
       .catch(error => console.log(error));
   };
 
+  const handleForgetPassword = () => {
+    const email = emailRef.current.value;
+    resetPassword(email)
+      .then(() => {
+        alert('A password reset email is sent');
+      })
+      .catch(error => console.log(error));
+  };
+
   return (
     <div className="card bg-base-100 mt-8 mx-auto max-w-sm shrink-0 shadow-2xl">
       <div className="card-body">
@@ -44,6 +58,7 @@ const SignIn = () => {
             <input
               type="email"
               name="email"
+              ref={emailRef}
               className="input pl-8"
               placeholder="Email"
               required
@@ -67,7 +82,9 @@ const SignIn = () => {
             </button>
           </label>
           <div>
-            <a className="link link-hover">Forgot password?</a>
+            <a onClick={handleForgetPassword} className="link link-hover">
+              Forgot password?
+            </a>
           </div>
           <button className="btn btn-neutral mt-4">Login</button>
         </form>

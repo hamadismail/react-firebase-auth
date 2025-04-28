@@ -4,6 +4,7 @@ import PasswordIcon from '../components/ui/PasswordIcon';
 import EmailIcon from '../components/ui/EmailIcon';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AuthContext } from '../providers/AuthContext';
+import { sendEmailVerification } from 'firebase/auth';
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +20,10 @@ const Registration = () => {
     createUser(email, password)
       .then(result => {
         console.log(result);
+        sendEmailVerification(result.user).then(() => {
+          alert('Verification Email Sent. Please Check Your Inbox');
+          return signOut(auth);
+        });
         navigate('/');
       })
       .catch(error => console.log(error));

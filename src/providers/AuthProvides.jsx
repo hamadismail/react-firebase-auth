@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -19,28 +20,12 @@ const AuthProvides = ({ children }) => {
 
   const createUser = (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      result => {
-        sendEmailVerification(result.user)
-          .then(() => {
-            alert('Verification Email Sent. Please Check Your Inbox');
-            return signOut(auth);
-          })
-          .catch(error => alert('Verification Error', error));
-      }
-    );
+    return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signInUser = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password)
-      .then(result => {
-        if (!result.user.emailVerified) {
-          alert('please verify your email address');
-          signOut(auth);
-        }
-      })
-      .catch(error => console.log(error));
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const googleSignIn = () => {
@@ -51,6 +36,10 @@ const AuthProvides = ({ children }) => {
   const signOutUser = () => {
     setLoading(true);
     return signOut(auth);
+  };
+
+  const resetPassword = email => {
+    return sendPasswordResetEmail(auth, email);
   };
 
   useEffect(() => {
@@ -79,6 +68,7 @@ const AuthProvides = ({ children }) => {
     signInUser,
     googleSignIn,
     signOutUser,
+    resetPassword,
   };
   return <AuthContext value={userInfo}>{children}</AuthContext>;
 };

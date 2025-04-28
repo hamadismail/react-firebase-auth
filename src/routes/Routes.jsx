@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import SignIn from '../pages/SignIn';
 import Registration from '../pages/Registration';
 import Order from '../pages/Order';
+import PrivateRoutes from './PrivateRoutes';
 
 const router = createBrowserRouter([
   {
@@ -12,10 +13,24 @@ const router = createBrowserRouter([
     Component: Root,
     errorElement: <Error />,
     children: [
-      { index: true, Component: Home },
+      {
+        index: true,
+        element: (
+          <PrivateRoutes>
+            <Home />
+          </PrivateRoutes>
+        ),
+      },
       { path: 'signin', Component: SignIn },
       { path: 'registration', Component: Registration },
-      { path: 'orders', Component: Order },
+      {
+        path: 'orders',
+        element: (
+          <PrivateRoutes>
+            <Order />
+          </PrivateRoutes>
+        ),
+      },
     ],
   },
 ]);

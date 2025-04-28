@@ -7,9 +7,13 @@ const Navbar = () => {
   const { user, signOutUser } = use(AuthContext);
   const links = (
     <>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+        </>
+      )}
       <li>
         <NavLink to="/signin">SignIn</NavLink>
       </li>

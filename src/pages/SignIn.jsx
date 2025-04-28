@@ -8,7 +8,7 @@ import { AuthContext } from '../providers/AuthContext';
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { signInUser } = use(AuthContext);
+  const { signInUser, googleSignIn } = use(AuthContext);
   const navigate = useNavigate();
 
   const handleSignIn = e => {
@@ -19,6 +19,15 @@ const SignIn = () => {
     signInUser(email, password)
       .then(result => {
         console.log(result);
+        navigate('/');
+      })
+      .catch(error => console.log(error));
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then(result => {
+        console.log(result.user);
         navigate('/');
       })
       .catch(error => console.log(error));
@@ -61,7 +70,7 @@ const SignIn = () => {
           </div>
           <button className="btn btn-neutral mt-4">Login</button>
         </form>
-        <GoogleLoginBtn />
+        <GoogleLoginBtn handleGoogleSignIn={handleGoogleSignIn} />
         <p>
           Didn't have an account?{' '}
           <Link className="text-blue-500 underline" to="/registration">

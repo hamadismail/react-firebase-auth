@@ -1,8 +1,11 @@
 import React from 'react';
 
-const GoogleLoginBtn = () => {
+const GoogleLoginBtn = ({ handleGoogleSignIn }) => {
   return (
-    <button className="btn bg-white text-black border-[#e5e5e5]">
+    <button
+      onClick={handleGoogleSignIn}
+      className="btn bg-white text-black border-[#e5e5e5]"
+    >
       <svg
         aria-label="Google logo"
         width="16"

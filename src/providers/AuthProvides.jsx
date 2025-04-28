@@ -24,6 +24,7 @@ const AuthProvides = ({ children }) => {
         sendEmailVerification(result.user)
           .then(() => {
             alert('Verification Email Sent. Please Check Your Inbox');
+            return signOut(auth);
           })
           .catch(error => alert('Verification Error', error));
       }
@@ -37,7 +38,6 @@ const AuthProvides = ({ children }) => {
         if (!result.user.emailVerified) {
           alert('please verify your email address');
           signOut(auth);
-          throw new Error('Email not verified');
         }
       })
       .catch(error => console.log(error));
@@ -55,8 +55,16 @@ const AuthProvides = ({ children }) => {
 
   useEffect(() => {
     const unSubscriber = onAuthStateChanged(auth, currentUser => {
-      console.log(currentUser);
-      setUser(currentUser);
+      if (currentUser) {
+        if (currentUser.emailVerified) {
+          setUser(currentUser);
+        } else {
+          setUser(null);
+          signOut(auth);
+        }
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
     return () => {

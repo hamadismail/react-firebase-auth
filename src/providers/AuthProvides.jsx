@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -18,12 +19,28 @@ const AuthProvides = ({ children }) => {
 
   const createUser = (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      result => {
+        sendEmailVerification(result.user)
+          .then(() => {
+            alert('Verification Email Sent. Please Check Your Inbox');
+          })
+          .catch(error => alert('Verification Error', error));
+      }
+    );
   };
 
   const signInUser = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password)
+      .then(result => {
+        if (!result.user.emailVerified) {
+          alert('please verify your email address');
+          signOut(auth);
+          throw new Error('Email not verified');
+        }
+      })
+      .catch(error => console.log(error));
   };
 
   const googleSignIn = () => {

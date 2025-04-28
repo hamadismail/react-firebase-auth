@@ -1,5 +1,5 @@
 import React, { use, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import GoogleLoginBtn from '../components/ui/GoogleLoginBtn';
 import PasswordIcon from '../components/ui/PasswordIcon';
 import EmailIcon from '../components/ui/EmailIcon';
@@ -10,6 +10,7 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signInUser, googleSignIn } = use(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignIn = e => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const SignIn = () => {
     signInUser(email, password)
       .then(result => {
         console.log(result);
-        navigate('/');
+        navigate(location?.state || '/');
       })
       .catch(error => console.log(error));
   };
@@ -28,7 +29,7 @@ const SignIn = () => {
     googleSignIn()
       .then(result => {
         console.log(result.user);
-        navigate('/');
+        navigate(location?.state || '/');
       })
       .catch(error => console.log(error));
   };

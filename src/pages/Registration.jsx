@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import PasswordIcon from '../components/ui/PasswordIcon';
 import EmailIcon from '../components/ui/EmailIcon';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { AuthContext } from '../providers/AuthContext';
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { createUser } = use(AuthContext);
+  const navigate = useNavigate();
 
   const handleRegistration = e => {
     e.preventDefault();
+    const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
+
+    createUser(email, password)
+      .then(result => {
+        console.log(result);
+        navigate('/');
+      })
+      .catch(error => console.log(error));
   };
 
   return (
@@ -18,7 +29,7 @@ const Registration = () => {
       <div className="card-body">
         <form onSubmit={handleRegistration} className="fieldset">
           <label className="label">Name</label>
-          <input type="text" className="input" placeholder="Name" />
+          <input type="text" name="name" className="input" placeholder="Name" />
           <label className="label">Email</label>
           <label className="input validator">
             <EmailIcon />

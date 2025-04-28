@@ -5,6 +5,10 @@ import PasswordIcon from '../components/ui/PasswordIcon';
 import EmailIcon from '../components/ui/EmailIcon';
 
 const SignIn = () => {
+  const handleSignIn = e => {
+    e.preventDefault();
+  };
+
   return (
     <div className="card bg-base-100 mt-8 mx-auto max-w-sm shrink-0 shadow-2xl">
       <div className="card-body">

@@ -1,32 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import PasswordIcon from '../components/ui/PasswordIcon';
 import EmailIcon from '../components/ui/EmailIcon';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Registration = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleRegistration = e => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+  };
+
   return (
     <div className="card bg-base-100 mt-8 mx-auto max-w-sm shrink-0 shadow-2xl">
       <div className="card-body">
-        <form className="fieldset">
+        <form onSubmit={handleRegistration} className="fieldset">
           <label className="label">Name</label>
           <input type="text" className="input" placeholder="Name" />
           <label className="label">Email</label>
           <label className="input validator">
             <EmailIcon />
-            <input type="email" placeholder="mail@site.com" required />
+            <input
+              type="email"
+              name="email"
+              placeholder="mail@site.com"
+              required
+            />
           </label>
           <div className="validator-hint hidden">Enter valid email address</div>
           <label className="label">Password</label>
           <label className="input validator">
             <PasswordIcon />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
+              name="password"
               required
               placeholder="Password"
-              minlength="8"
+              minLength="8"
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
             />
+
+            <button
+              className="cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
           </label>
           <p className="validator-hint hidden">
             Must be more than 8 characters, including

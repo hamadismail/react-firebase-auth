@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import GoogleLoginBtn from '../components/ui/GoogleLoginBtn';
 import PasswordIcon from '../components/ui/PasswordIcon';
 import EmailIcon from '../components/ui/EmailIcon';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { AuthContext } from '../providers/AuthContext';
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { signInUser } = use(AuthContext);
+  const navigate = useNavigate();
 
   const handleSignIn = e => {
     e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    signInUser(email, password)
+      .then(result => {
+        console.log(result);
+        navigate('/');
+      })
+      .catch(error => console.log(error));
   };
 
   return (
@@ -21,6 +33,7 @@ const SignIn = () => {
             <EmailIcon className="absolute top-1/2 z-10 -translate-y-1/2 left-2" />
             <input
               type="email"
+              name="email"
               className="input pl-8"
               placeholder="Email"
               required
@@ -31,6 +44,7 @@ const SignIn = () => {
             <PasswordIcon className="absolute top-1/2 z-10 left-2 -translate-y-1/2" />
             <input
               type={showPassword ? 'text' : 'password'}
+              name="password"
               className="input pl-8"
               placeholder="Password"
               required

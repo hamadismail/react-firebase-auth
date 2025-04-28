@@ -36,7 +36,7 @@ const SignIn = () => {
               required
             />
             <button
-              className="cursor-pointer absolute top-1/2 -translate-1/2 right-6 text-gray-600"
+              className="cursor-pointer z-10 absolute top-1/2 -translate-1/2 right-6 text-gray-600"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}

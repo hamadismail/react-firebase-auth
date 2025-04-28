@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PasswordIcon from '../components/ui/PasswordIcon';
+import EmailIcon from '../components/ui/EmailIcon';
 
 const Registration = () => {
   return (
@@ -9,9 +11,30 @@ const Registration = () => {
           <label className="label">Name</label>
           <input type="text" className="input" placeholder="Name" />
           <label className="label">Email</label>
-          <input type="email" className="input" placeholder="Email" />
+          <label className="input validator">
+            <EmailIcon />
+            <input type="email" placeholder="mail@site.com" required />
+          </label>
+          <div className="validator-hint hidden">Enter valid email address</div>
           <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" />
+          <label className="input validator">
+            <PasswordIcon />
+            <input
+              type="password"
+              required
+              placeholder="Password"
+              minlength="8"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+            />
+          </label>
+          <p className="validator-hint hidden">
+            Must be more than 8 characters, including
+            <br />
+            At least one number <br />
+            At least one lowercase letter <br />
+            At least one uppercase letter
+          </p>
           <div>
             <a className="link link-hover"></a>
           </div>

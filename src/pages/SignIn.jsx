@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
+import GoogleLoginBtn from '../components/ui/GoogleLoginBtn';
+import PasswordIcon from '../components/ui/PasswordIcon';
+import EmailIcon from '../components/ui/EmailIcon';
 
 const SignIn = () => {
   return (
@@ -7,14 +10,31 @@ const SignIn = () => {
       <div className="card-body">
         <form className="fieldset">
           <label className="label">Email</label>
-          <input type="email" className="input" placeholder="Email" />
+          <label className="relative">
+            <EmailIcon className="absolute top-1/2 z-10 -translate-y-1/2 left-2" />
+            <input
+              type="email"
+              className="input pl-8"
+              placeholder="Email"
+              required
+            />
+          </label>
           <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" />
+          <label className="relative">
+            <PasswordIcon className="absolute top-1/2 z-10 left-2 -translate-y-1/2" />
+            <input
+              type="password"
+              className="input pl-8"
+              placeholder="Password"
+              required
+            />
+          </label>
           <div>
             <a className="link link-hover">Forgot password?</a>
           </div>
           <button className="btn btn-neutral mt-4">Login</button>
         </form>
+        <GoogleLoginBtn />
         <p>
           Didn't have an account?{' '}
           <Link className="text-blue-500 underline" to="/registration">
